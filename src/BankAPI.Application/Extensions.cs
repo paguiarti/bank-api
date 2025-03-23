@@ -12,6 +12,7 @@ namespace BankAPI.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IAddBankAccountService, AddBankAccountService>();
+            services.AddScoped<IGetAllBankAccountService, GetAllBankAccountService>();
 
             return services;
         }
