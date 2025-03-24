@@ -4,8 +4,8 @@ using BankAPI.Application.Dtos.ViewModels;
 
 namespace BankAPI.Application.Interfaces.Services
 {
-    public interface IGetAllBankAccountService
+    public interface IDeactivateBankAccountService
     {
-        Task<PaginationApiResponse<IEnumerable<BankAccountViewModel>>> GetAllAsync(GetAllBankAccountInputModel inputModel);
+        Task<CustomApiResponse<DeactivateBankAccountViewModel>> DeactivateBankAccountAsync(DeactivateBankAccountInputModel inputModel);
     }
 }

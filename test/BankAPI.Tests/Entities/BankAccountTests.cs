@@ -1,4 +1,6 @@
 ﻿using BankAPI.Core.Entities;
+using BankAPI.Core.Enums;
+using BankAPI.Core.Exceptions;
 
 namespace BankAPI.Tests.Entities
 {
@@ -43,7 +45,7 @@ namespace BankAPI.Tests.Entities
             var bankAccount = new BankAccount(nome, documento);
 
             // Assert
-            Assert.Equal(BankAccount.BONIFICACAO_INICIAL, bankAccount.Balance);
+            Assert.Equal(BankAccount.INITIAL_BONUS, bankAccount.Balance);
         }
 
         [Fact]
@@ -58,6 +60,35 @@ namespace BankAPI.Tests.Entities
 
             // Assert
             Assert.InRange(bankAccount.OpeningDate, DateTime.Now.AddSeconds(-5), DateTime.Now);
+        }
+
+        [Fact]
+        public void BankAccount_ShouldThrowInvalidBankAccountStatusException_WhenDeactivateCalledAndStatusIsNotActive()
+        {
+            // Arrange
+            var bankAccount = new BankAccount("Paulo Aguiar Junior", "12345678901");
+
+            // Act
+            bankAccount.DeactivateAccount("user");
+
+            // Assert
+            var exception = Assert.Throws<InvalidBankAccountStatusException>(() => bankAccount.DeactivateAccount("user"));
+
+            Assert.Contains("Conta bancária não se encontra ativa para ser desativada.", exception.Message);
+        }
+
+        [Fact]
+        public void BankAccount_ShouldAddStatusHistory_WhenAccountIsDeactivated()
+        {
+            // Arrange
+            var bankAccount = new BankAccount("Paulo Aguiar Junior", "12345678901");
+
+            // Act
+            bankAccount.DeactivateAccount("user");
+
+            // Assert
+            Assert.Single(bankAccount.StatusHistory);
+            Assert.Equal(BankAccountStatus.Inactive, bankAccount.Status);
         }
     }
 }

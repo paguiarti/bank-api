@@ -59,6 +59,11 @@ namespace BankAPI.Infrastructure.Persistence.Repositories
                             .FirstOrDefaultAsync();
         }
 
+        public void Update(BankAccount bankAccount)
+        {
+            _context.BankAccounts.Update(bankAccount);            
+        }
+
         private IQueryable<BankAccount> ApplyFilters(
             IQueryable<BankAccount> query,
             string name = "",

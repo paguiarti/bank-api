@@ -21,7 +21,11 @@ namespace BankAPI.Infrastructure.Persistence.Configurations
             builder
                 .HasIndex(b => b.Document)
                 .IsUnique();
-                
+
+            builder
+                .HasMany(b => b.StatusHistory)
+                .WithOne()
+                .HasForeignKey(b => b.BankAccountId);
         }
     }
 }

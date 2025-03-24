@@ -1,7 +1,6 @@
-﻿using BankAPI.Application.Dtos;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace BankAPI.Application
+namespace BankAPI.Application.Dtos
 {
     public class PaginationApiResponse<T> : CustomApiResponse<T>
     {

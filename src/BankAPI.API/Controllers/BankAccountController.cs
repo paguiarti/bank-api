@@ -11,13 +11,16 @@ namespace BankAPI.API.Controllers
     {
         private readonly IAddBankAccountService _addBankAccountService;
         private readonly IGetAllBankAccountService _getAllBankAccountService;
+        private readonly IDeactivateBankAccountService _deactivateBankAccountService;
 
         public BankAccountController(
             IAddBankAccountService addBankAccountService,
-            IGetAllBankAccountService getAllBankAccountService)
+            IGetAllBankAccountService getAllBankAccountService,
+            IDeactivateBankAccountService deactivateBankAccountService)
         {
             _addBankAccountService = addBankAccountService;
             _getAllBankAccountService = getAllBankAccountService;
+            _deactivateBankAccountService = deactivateBankAccountService;
         }
 
         [HttpPost("")]
@@ -37,6 +40,19 @@ namespace BankAPI.API.Controllers
         public async Task<IActionResult> GetAllBankAccounts(GetAllBankAccountInputModel inputModel)
         {
             var response = await _getAllBankAccountService.GetAllAsync(inputModel);
+
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPut("deactivate")]
+        public async Task<IActionResult> DeactivateBankAccount([FromBody] DeactivateBankAccountInputModel inputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(CustomApiResponse<object>.FromModelState(ModelState));
+            }
+
+            var response = await _deactivateBankAccountService.DeactivateBankAccountAsync(inputModel);
 
             return StatusCode(response.StatusCode, response);
         }

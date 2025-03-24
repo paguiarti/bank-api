@@ -1,4 +1,5 @@
-﻿using BankAPI.Application.Dtos.InputModels;
+﻿using BankAPI.Application.Dtos;
+using BankAPI.Application.Dtos.InputModels;
 using BankAPI.Application.Dtos.ViewModels;
 using BankAPI.Application.Interfaces.Services;
 using BankAPI.Core.Interfaces;

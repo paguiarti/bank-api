@@ -13,6 +13,7 @@ namespace BankAPI.Application
         {
             services.AddScoped<IAddBankAccountService, AddBankAccountService>();
             services.AddScoped<IGetAllBankAccountService, GetAllBankAccountService>();
+            services.AddScoped<IDeactivateBankAccountService, DeactivateBankAccountService>();
 
             return services;
         }
@@ -20,7 +21,7 @@ namespace BankAPI.Application
         public static IServiceCollection AddFluentValidation(this IServiceCollection services)
         {
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining(typeof(AddBankAccountInputModelValidator));                
+            services.AddValidatorsFromAssemblyContaining(typeof(AddBankAccountInputModelValidator));
 
             return services;
         }

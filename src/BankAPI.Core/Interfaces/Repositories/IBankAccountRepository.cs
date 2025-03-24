@@ -13,5 +13,7 @@ namespace BankAPI.Core.Interfaces.Repositories
         Task<IEnumerable<BankAccount>> GetAllAsync(string name = "", string document = "", int page = 1, int pageSize = 10);
 
         Task<int> CountAsync(string name = "", string document = "");
+
+        void Update(BankAccount bankAccount);
     }
 }
