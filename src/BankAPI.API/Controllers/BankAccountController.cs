@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankAPI.API.Controllers
 {
     [ApiController]
-    [Route("bank-accounts")]
+    [Route("api/v1/bank-accounts")]
     public class BankAccountController : ControllerBase
     {
         private readonly IAddBankAccountService _addBankAccountService;
@@ -22,7 +22,7 @@ namespace BankAPI.API.Controllers
             _getAllBankAccountService = getAllBankAccountService;
             _deactivateBankAccountService = deactivateBankAccountService;
         }
-
+        
         [HttpPost("")]
         public async Task<IActionResult> AddBankAccount([FromBody] AddBankAccountInputModel inputModel)
         {
