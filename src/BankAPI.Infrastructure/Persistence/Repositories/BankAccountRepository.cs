@@ -51,7 +51,7 @@ namespace BankAPI.Infrastructure.Persistence.Repositories
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<BankAccount> GetByDocumentAsync(string document)
+        public async Task<BankAccount?> GetByDocumentAsync(string document)
         {
             return await _context
                             .BankAccounts

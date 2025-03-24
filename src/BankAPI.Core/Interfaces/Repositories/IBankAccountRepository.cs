@@ -6,7 +6,7 @@ namespace BankAPI.Core.Interfaces.Repositories
     {
         Task<BankAccount> AddAsync(BankAccount bankAccount);
 
-        Task<BankAccount> GetByDocumentAsync(string document);
+        Task<BankAccount?> GetByDocumentAsync(string document);
 
         Task<bool> ExistsByDocumentAsync(string document);
 
