@@ -30,12 +30,10 @@ namespace BankAPI.Application.Dtos
             return new PaginationApiResponse<T>(true, string.Empty, data, statusCode, page, pageSize, totalCount);
         }
 
-        public static PaginationApiResponse<T> FailResponse(string message, int statusCode,
+        public new static PaginationApiResponse<T> FailResponse(string message, int statusCode,
                                                        Dictionary<string, List<string>>? errors = null)
         {
             return new PaginationApiResponse<T>(false, message, default, statusCode, 0, 0, 0, errors);
         }
-
-
     }
 }

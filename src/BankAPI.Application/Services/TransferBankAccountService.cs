@@ -23,12 +23,22 @@ namespace BankAPI.Application.Services
 
         public async Task<CustomApiResponse<TransferBankAccountViewModel>> TransferBankAccountAsync(TransferBankAccountInputModel inputModel)
         {
-            var bankAccountFrom = await _unitOfWork.BankAccountRepository.GetByIdAsync(inputModel.BankAccountIdFrom);
-            var bankAccountTo = await _unitOfWork.BankAccountRepository.GetByIdAsync(inputModel.BankAccountIdTo);
+            var bankAccountFrom = await _unitOfWork
+                .BankAccountRepository
+                .GetByIdAsync(inputModel.BankAccountIdFrom);
+            
+            var bankAccountTo = await _unitOfWork
+                .BankAccountRepository
+                .GetByIdAsync(inputModel.BankAccountIdTo);
 
-            if (bankAccountFrom == null || bankAccountTo == null)
+            if (bankAccountFrom == null)
             {
-                return CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Conta de origem ou destino não encontrada.");
+                return CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Conta de origem não encontrada.");
+            }
+
+            if (bankAccountTo == null)
+            {
+                return CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Conta de destino não encontrada.");
             }
 
             await _unitOfWork.BeginTransactionAsync();

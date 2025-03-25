@@ -42,9 +42,17 @@ namespace BankAPI.Application.Dtos
 
         public static CustomApiResponse<T> FromModelState(ModelStateDictionary modelState)
         {
+            if (modelState == null)
+            {
+                throw new ArgumentNullException(nameof(modelState));
+            }
+
             var errors = modelState
-                .Where(ms => ms.Value.Errors.Any())
-                .ToDictionary(ms => ms.Key, ms => ms.Value.Errors.Select(e => e.ErrorMessage).ToList());
+                .Where(ms => ms.Value?.Errors?.Any() == true)
+                .ToDictionary(
+                    ms => ms.Key,
+                    ms => ms.Value!.Errors!.Select(e => e.ErrorMessage ?? string.Empty).ToList()
+                );
 
             return FailResponse("Falha na validação dos dados.", StatusCodes.Status400BadRequest, errors);
         }

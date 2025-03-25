@@ -9,8 +9,6 @@ namespace BankAPI.Application.Services
 {
     public class AddBankAccountService : IAddBankAccountService
     {
-        public const string ACCOUNT_ALREADY_EXISTS_MSG = "Conta já cadastrada para o documento informado.";
-        public const string ACCOUNT_CREATED_MSG = "Conta criada com sucesso.";
         private readonly IUnitOfWork _unitOfWork;
 
         public AddBankAccountService(IUnitOfWork unitOfWork)
@@ -24,7 +22,7 @@ namespace BankAPI.Application.Services
             if (accountExists)
             {
                 return CustomApiResponse<AddBankAccountViewModel>.FailResponse(
-                    ACCOUNT_ALREADY_EXISTS_MSG,
+                    "Conta já cadastrada para o documento informado.",
                     StatusCodes.Status409Conflict);
             }
 
@@ -32,8 +30,8 @@ namespace BankAPI.Application.Services
             await _unitOfWork.SaveChangesAsync();
 
             return CustomApiResponse<AddBankAccountViewModel>.SuccessResponse(
-                AddBankAccountViewModel.FromEntity(bankAccountEntity), 
-                ACCOUNT_CREATED_MSG, 
+                AddBankAccountViewModel.FromEntity(bankAccountEntity),
+                "Conta criada com sucesso.", 
                 StatusCodes.Status201Created);
         }
     }

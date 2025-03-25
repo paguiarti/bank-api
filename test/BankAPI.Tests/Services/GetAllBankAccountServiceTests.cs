@@ -32,9 +32,9 @@ namespace BankAPI.Tests.Services
             var nameFiltered = "Aguiar";
             
             var bankAccounts = new List<BankAccount> {
-                new BankAccount("Paulo Aguiar Junior", "39063222890"),
-                new BankAccount("Naiara Barboza", "41175850123"),
-                new BankAccount("Plinio Furlaneto", "21435688798")
+                new("Paulo Aguiar Junior", "39063222890"),
+                new("Naiara Barboza", "41175850123"),
+                new("Plinio Furlaneto", "21435688798")
             };
 
             var inputModel = new GetAllBankAccountInputModel
@@ -59,8 +59,8 @@ namespace BankAPI.Tests.Services
 
 
             // Asserts
-            Assert.NotNull(result);
-            Assert.Equal(1, result.Data.Count());
+            Assert.NotNull(result.Data);
+            Assert.Single(result.Data);
             Assert.Equal("Paulo Aguiar Junior", result.Data.First().Name);
             Assert.Equal("39063222890", result.Data.First().Document);
 
@@ -92,7 +92,7 @@ namespace BankAPI.Tests.Services
             var result = await _getAllBankAccountService.GetAllAsync(inputModel);
 
             // Asserts
-            Assert.NotNull(result);
+            Assert.NotNull(result.Data);
             Assert.Empty(result.Data);
         }
     }

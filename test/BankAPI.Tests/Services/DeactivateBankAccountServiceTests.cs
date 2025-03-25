@@ -72,7 +72,7 @@ namespace BankAPI.Tests.Services
             // Assert
             Assert.False(result.Success);
             Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
-            Assert.Equal(DeactivateBankAccountService.ACCOUNT_NOT_FOUND_MSG, result.Message);
+            Assert.Equal("Conta bancária não encontrada.", result.Message);
 
             _unitOfWorkMock
                 .Verify(u => u.BankAccountRepository.Update(It.IsAny<BankAccount>()), Times.Never);

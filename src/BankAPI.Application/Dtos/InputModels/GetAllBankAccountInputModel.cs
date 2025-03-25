@@ -5,10 +5,10 @@ namespace BankAPI.Application.Dtos.InputModels
     public class GetAllBankAccountInputModel
     {
         [FromQuery(Name = "document")]
-        public string? Document { get; set; }
+        public string Document { get; set; } = string.Empty;
 
         [FromQuery(Name = "name")]
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [FromQuery(Name = "page")]
         public int Page { get; set; } = 1;

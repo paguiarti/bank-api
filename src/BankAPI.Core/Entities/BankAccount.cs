@@ -36,7 +36,7 @@ namespace BankAPI.Core.Entities
         public BankAccountStatus Status { get; private set; }
 
         [Timestamp]
-        public byte[] RowVersion { get; private set; }
+        public byte[] RowVersion { get; private set; } = null!; // Supressão segura (EF Core garante a inicialização)
 
         public List<BankAccountStatusHistory> StatusHistory { get; private set; }
 
@@ -58,6 +58,22 @@ namespace BankAPI.Core.Entities
                 ));
         }
 
+        public void ActivateAccount(string user)
+        {
+            if (Status.Equals(BankAccountStatus.Active))
+            {
+                throw new InvalidBankAccountStatusException($"Conta já se encontra ativa.");
+            }
+
+            Status = BankAccountStatus.Active;
+
+            StatusHistory.Add(new BankAccountStatusHistory(
+                Id,
+                Status,
+                user
+                ));
+        }
+
         public void TransferTo(BankAccount destination, decimal amount)
         {
             if (destination == null)
@@ -66,17 +82,17 @@ namespace BankAPI.Core.Entities
             if (amount <= 0)
                 throw new InvalidTransferValueException("Valor deve ser maior do que zero.");
 
-            if (Id == destination.Id)
+            if (Document == destination.Document)
                 throw new InvalidTransferDestinationException("Não é possível transferir para a mesma conta.");
 
             if (Status != BankAccountStatus.Active)
-                throw new InvalidBankAccountStatusException("Conta origem deve estar ativa.");
+                throw new InvalidBankAccountStatusException("Conta origem deve estar ativa para realizar uma transferência.");
 
             if (destination.Status != BankAccountStatus.Active)
-                throw new InvalidBankAccountStatusException("Conta destino deve estar ativa.");
+                throw new InvalidBankAccountStatusException("Conta destino deve estar ativa para receber uma transferência.");
 
             if (amount > Balance)
-                throw new InsufficientFundsException("Saldo insuficiente.");
+                throw new InsufficientFundsException("Saldo insuficiente para realizar a transferência.");
 
             DecreaseBalance(amount);
             destination.IncreaseBalance(amount);
@@ -97,6 +113,47 @@ namespace BankAPI.Core.Entities
                 TransactionType.TransferIn,
                 $"Transferência recebida da conta: {Id}",
                 transactionPairId
+                ));
+        }
+
+        public void Deposit(decimal amount)
+        {
+            if (Status != BankAccountStatus.Active)
+            {
+                throw new InvalidBankAccountStatusException("A conta deve estar ativa para depositar.");
+            }
+
+            Balance += amount;
+
+            AddTransaction(new BankAccountTransaction(
+                Id,
+                amount,
+                TransactionType.Deposit,
+                $"Depósito realizado",
+                null
+                ));
+        }
+
+        public void Withdrawal(decimal amount)
+        {
+            if (Status != BankAccountStatus.Active)
+            {
+                throw new InvalidBankAccountStatusException("A conta deve estar ativa para sacar.");
+            }
+
+            if (amount > Balance)
+            {
+                throw new InsufficientFundsException("Saldo insuficiente para realizar o saque.");
+            }
+
+            Balance -= amount;
+
+            AddTransaction(new BankAccountTransaction(
+                Id,
+                amount,
+                TransactionType.Withdrawal,
+                $"Saque realizado",
+                null
                 ));
         }
 

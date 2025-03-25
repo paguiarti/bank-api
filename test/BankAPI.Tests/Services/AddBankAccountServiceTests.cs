@@ -38,7 +38,7 @@ namespace BankAPI.Tests.Services
             
             // Assert
             Assert.Equal(StatusCodes.Status409Conflict, result.StatusCode);
-            Assert.Equal(AddBankAccountService.ACCOUNT_ALREADY_EXISTS_MSG, result.Message);
+            Assert.Equal("Conta já cadastrada para o documento informado.", result.Message);
 
             _unitOfWorkMock.Verify(u => u.BankAccountRepository.AddAsync(It.IsAny<BankAccount>()), Times.Never);
             _unitOfWorkMock.Verify(u => u.SaveChangesAsync(), Times.Never);
@@ -71,7 +71,7 @@ namespace BankAPI.Tests.Services
 
             // Assert
             Assert.Equal(StatusCodes.Status201Created, result.StatusCode);
-            Assert.Equal(AddBankAccountService.ACCOUNT_CREATED_MSG, result.Message);
+            Assert.Equal("Conta criada com sucesso.", result.Message);
 
             _unitOfWorkMock
                 .Verify(u => u.BankAccountRepository.AddAsync(It.Is<BankAccount>(b => b.Document == inputModel.Document && b.Name == inputModel.Name)), Times.Once);

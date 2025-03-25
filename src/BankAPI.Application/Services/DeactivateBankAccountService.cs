@@ -12,9 +12,6 @@ namespace BankAPI.Application.Services
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public const string ACCOUNT_NOT_FOUND_MSG = "Conta bancária não encontrada.";
-        public const string ACCOUNT_DEACTIVATED_MSG = "Conta bancária inativada com sucesso.";
-
         public DeactivateBankAccountService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -26,7 +23,7 @@ namespace BankAPI.Application.Services
             if (bankAccount == null)
             {
                 return CustomApiResponse<DeactivateBankAccountViewModel>.FailResponse(
-                    ACCOUNT_NOT_FOUND_MSG,
+                    "Conta bancária não encontrada.",
                     StatusCodes.Status400BadRequest);
             }
 
@@ -40,7 +37,7 @@ namespace BankAPI.Application.Services
 
                 return CustomApiResponse<DeactivateBankAccountViewModel>.SuccessResponse(
                     new DeactivateBankAccountViewModel(bankAccount.Id, bankAccount.Document, bankAccount.Status.ToString()),
-                    ACCOUNT_DEACTIVATED_MSG);
+                    "Conta bancária inativada com sucesso.");
             }
             catch (InvalidBankAccountStatusException ex)
             {
