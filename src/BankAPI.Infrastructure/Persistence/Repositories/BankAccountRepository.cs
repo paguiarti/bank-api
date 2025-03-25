@@ -54,9 +54,16 @@ namespace BankAPI.Infrastructure.Persistence.Repositories
         public async Task<BankAccount?> GetByDocumentAsync(string document)
         {
             return await _context
-                            .BankAccounts
-                            .Where(b => b.Document == document)
-                            .FirstOrDefaultAsync();
+                .BankAccounts
+                .Where(b => b.Document == document)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<BankAccount?> GetByIdAsync(int id)
+        {
+            return await _context
+                .BankAccounts
+                .FindAsync(id);                 
         }
 
         public void Update(BankAccount bankAccount)

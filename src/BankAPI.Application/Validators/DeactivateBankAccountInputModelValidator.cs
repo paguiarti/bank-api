@@ -8,12 +8,12 @@ namespace BankAPI.Application.Validators
         public DeactivateBankAccountInputModelValidator()
         {
             RuleFor(x => x.User)
-            .NotEmpty().WithMessage("O usuário é obrigatório.");            
+            .NotEmpty().WithMessage("'user' é obrigatório.");            
 
             RuleFor(x => x.Document)
-                .NotEmpty().WithMessage("O documento é obrigatório.")
-                .Matches(@"^\d+$").WithMessage("O documento deve conter apenas números.")
-                .Length(11, 14).WithMessage("O documento deve ter entre 11 e 14 caracteres.");
+                .NotEmpty().WithMessage("'document' é obrigatório.")
+                .Matches(@"^\d+$").WithMessage("'document' deve conter apenas números.")
+                .Length(11, 14).WithMessage("'document' deve ter entre 11 e 14 caracteres.");
         }
     }
 }

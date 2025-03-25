@@ -14,6 +14,7 @@ namespace BankAPI.Application
             services.AddScoped<IAddBankAccountService, AddBankAccountService>();
             services.AddScoped<IGetAllBankAccountService, GetAllBankAccountService>();
             services.AddScoped<IDeactivateBankAccountService, DeactivateBankAccountService>();
+            services.AddScoped<ITransferBankAccountService, TransferBankAccountService>(); 
 
             return services;
         }

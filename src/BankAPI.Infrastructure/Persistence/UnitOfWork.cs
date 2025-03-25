@@ -31,6 +31,7 @@ namespace BankAPI.Infrastructure.Persistence
 
         public async Task CommitTransactionAsync()
         {
+            await SaveChangesAsync();
             await _context.Database.CommitTransactionAsync();
         }
 

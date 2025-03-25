@@ -11,6 +11,10 @@ namespace BankAPI.Infrastructure.Persistence.Configurations
             builder.ToTable("BankAccounts");
 
             builder
+                .Property(b => b.Id)
+                .UseIdentityColumn(1000, 1);
+
+            builder
                 .Property(b => b.Name)
                 .HasMaxLength(200);
 

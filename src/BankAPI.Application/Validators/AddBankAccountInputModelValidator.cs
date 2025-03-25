@@ -8,13 +8,13 @@ namespace BankAPI.Application.Validators
         public AddBankAccountInputModelValidator()
         {
             RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("O nome é obrigatório.")
-            .Length(5, 200).WithMessage("O nome deve ter entre 3 e 200 caracteres.");
+            .NotEmpty().WithMessage("'name' é obrigatório.")
+            .Length(5, 200).WithMessage("'name' deve ter entre 3 e 200 caracteres.");
 
             RuleFor(x => x.Document)
-                .NotEmpty().WithMessage("O documento é obrigatório.")
-                .Matches(@"^\d+$").WithMessage("O documento deve conter apenas números.")
-                .Length(11, 14).WithMessage("O documento deve ter entre 11 e 14 caracteres.");
+                .NotEmpty().WithMessage("'document' é obrigatório.")
+                .Matches(@"^\d+$").WithMessage("'document' deve conter apenas números.")
+                .Length(11, 14).WithMessage("'document' deve ter entre 11 e 14 caracteres.");
         }
     }
 }

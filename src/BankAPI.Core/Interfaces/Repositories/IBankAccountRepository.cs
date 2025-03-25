@@ -8,6 +8,8 @@ namespace BankAPI.Core.Interfaces.Repositories
 
         Task<BankAccount?> GetByDocumentAsync(string document);
 
+        Task<BankAccount?> GetByIdAsync(int id);
+
         Task<bool> ExistsByDocumentAsync(string document);
 
         Task<IEnumerable<BankAccount>> GetAllAsync(string name = "", string document = "", int page = 1, int pageSize = 10);

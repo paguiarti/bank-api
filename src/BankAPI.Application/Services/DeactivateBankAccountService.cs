@@ -35,6 +35,7 @@ namespace BankAPI.Application.Services
                 bankAccount.DeactivateAccount(inputModel.User);
 
                 _unitOfWork.BankAccountRepository.Update(bankAccount);
+                
                 await _unitOfWork.SaveChangesAsync();
 
                 return CustomApiResponse<DeactivateBankAccountViewModel>.SuccessResponse(

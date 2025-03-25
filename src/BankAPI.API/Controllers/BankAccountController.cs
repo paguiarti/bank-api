@@ -12,15 +12,18 @@ namespace BankAPI.API.Controllers
         private readonly IAddBankAccountService _addBankAccountService;
         private readonly IGetAllBankAccountService _getAllBankAccountService;
         private readonly IDeactivateBankAccountService _deactivateBankAccountService;
+        private readonly ITransferBankAccountService _transferBankAccountService;
 
         public BankAccountController(
             IAddBankAccountService addBankAccountService,
             IGetAllBankAccountService getAllBankAccountService,
-            IDeactivateBankAccountService deactivateBankAccountService)
+            IDeactivateBankAccountService deactivateBankAccountService,
+            ITransferBankAccountService transferBankAccountService)
         {
             _addBankAccountService = addBankAccountService;
             _getAllBankAccountService = getAllBankAccountService;
             _deactivateBankAccountService = deactivateBankAccountService;
+            _transferBankAccountService = transferBankAccountService;
         }
         
         [HttpPost("")]
@@ -53,6 +56,19 @@ namespace BankAPI.API.Controllers
             }
 
             var response = await _deactivateBankAccountService.DeactivateBankAccountAsync(inputModel);
+
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPost("transfer")]
+        public async Task<IActionResult> TransferBankAccount([FromBody] TransferBankAccountInputModel inputModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(CustomApiResponse<object>.FromModelState(ModelState));
+            }
+
+            var response = await _transferBankAccountService.TransferBankAccountAsync(inputModel);
 
             return StatusCode(response.StatusCode, response);
         }
