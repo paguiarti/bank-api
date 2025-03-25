@@ -19,7 +19,7 @@ namespace BankAPI.Application.Services
 
         public async Task<CustomApiResponse<DeactivateBankAccountViewModel>> DeactivateBankAccountAsync(DeactivateBankAccountInputModel inputModel)
         {
-            var bankAccount = await _unitOfWork.BankAccountRepository.GetByDocumentAsync(inputModel.Document);
+            var bankAccount = await _unitOfWork.BankAccountRepository.GetByIdAsync(inputModel.BankAccountId);
             if (bankAccount == null)
             {
                 return CustomApiResponse<DeactivateBankAccountViewModel>.FailResponse(

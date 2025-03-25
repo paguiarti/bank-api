@@ -25,14 +25,14 @@ namespace BankAPI.Tests.Services
             // Arrange
             var inputModel = new DeactivateBankAccountInputModel
             {
-                Document = "14752866390",
-                User = "roberto"
+                BankAccountId = 1000,
+                User = "user"
             };
 
             var bankAccount = new BankAccount("Paulo Aguiar Junior", "14752866390");
 
             _unitOfWorkMock
-                .Setup(u => u.BankAccountRepository.GetByDocumentAsync(It.IsAny<string>()))
+                .Setup(u => u.BankAccountRepository.GetByIdAsync(inputModel.BankAccountId))
                 .ReturnsAsync(bankAccount);
 
             _unitOfWorkMock
@@ -43,7 +43,7 @@ namespace BankAPI.Tests.Services
 
             // Assert
             _unitOfWorkMock
-                .Verify(u => u.BankAccountRepository.GetByDocumentAsync(It.IsAny<string>()), Times.Once);
+                .Verify(u => u.BankAccountRepository.GetByIdAsync(inputModel.BankAccountId), Times.Once);
 
             _unitOfWorkMock
                 .Verify(u => u.BankAccountRepository.Update(It.Is<BankAccount>(b => b.Status == BankAccountStatus.Inactive)), Times.Once);
@@ -58,12 +58,12 @@ namespace BankAPI.Tests.Services
             // Arrange
             var inputModel = new DeactivateBankAccountInputModel
             {
-                Document = "14752866390",
-                User = "roberto"
+                BankAccountId = 1000,
+                User = "user"
             };
 
             _unitOfWorkMock
-                .Setup(u => u.BankAccountRepository.GetByDocumentAsync(It.IsAny<string>()))
+                .Setup(u => u.BankAccountRepository.GetByIdAsync(inputModel.BankAccountId))
                 .ReturnsAsync((BankAccount?)null);
 
             // Act
