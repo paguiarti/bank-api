@@ -10,15 +10,19 @@ Este projeto é uma aplicação em **.NET 8.0** utilizando **Arquitetura Limpa**
 
 
 - Cadastro de contas bancárias
+  
 A API permite o cadastro de contas bancárias para novos clientes, onde cada conta começa com um saldo inicial de R$1000 como bonificação.
 
 - Consulta de conta bancária
+  
 Os usuários podem consultar os detalhes de uma conta bancária, incluindo o saldo atual e o status da conta (ativa ou inativa).
 
 - Desativação de conta
+  
 A API permite a desativação de contas bancárias. Uma conta desativada não poderá realizar mais transações.
 
 - Transferência de valores
+  
 A API permite a transferência de valores entre duas contas bancárias, desde que ambas as contas estejam ativas e a conta de origem tenha saldo suficiente para a transação.
 
 ## Tecnologias / Padrões utilizados
