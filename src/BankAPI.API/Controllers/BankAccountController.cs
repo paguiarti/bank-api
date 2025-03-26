@@ -1,7 +1,9 @@
 ﻿using BankAPI.Application.Dtos;
 using BankAPI.Application.Dtos.InputModels;
+using BankAPI.Application.Dtos.ViewModels;
 using BankAPI.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BankAPI.API.Controllers
 {
@@ -27,6 +29,9 @@ namespace BankAPI.API.Controllers
         }
         
         [HttpPost("")]
+        [ProducesResponseType(typeof(CustomApiResponse<AddBankAccountViewModel>), StatusCodes.Status201Created, "application/json")]
+        [ProducesResponseType(typeof(CustomApiResponse<string>), StatusCodes.Status409Conflict, "application/json")]
+        [ProducesResponseType(typeof(CustomApiResponse<string>), StatusCodes.Status500InternalServerError, "application/json")]
         public async Task<IActionResult> AddBankAccount([FromBody] AddBankAccountInputModel inputModel)
         {
             if (!ModelState.IsValid)
@@ -40,6 +45,8 @@ namespace BankAPI.API.Controllers
         }
 
         [HttpGet("")]
+        [ProducesResponseType(typeof(CustomApiResponse<IEnumerable<BankAccountViewModel>>), StatusCodes.Status200OK, "application/json")]
+        [ProducesResponseType(typeof(CustomApiResponse<string>), StatusCodes.Status400BadRequest, "application/json")]
         public async Task<IActionResult> GetAllBankAccounts(GetAllBankAccountInputModel inputModel)
         {
             var response = await _getAllBankAccountService.GetAllAsync(inputModel);
@@ -48,6 +55,9 @@ namespace BankAPI.API.Controllers
         }
 
         [HttpPut("deactivate")]
+        [ProducesResponseType(typeof(CustomApiResponse<DeactivateBankAccountViewModel>), StatusCodes.Status200OK, "application/json")]
+        [ProducesResponseType(typeof(CustomApiResponse<string>), StatusCodes.Status400BadRequest, "application/json")]
+        [ProducesResponseType(typeof(CustomApiResponse<string>), StatusCodes.Status500InternalServerError, "application/json")]
         public async Task<IActionResult> DeactivateBankAccount([FromBody] DeactivateBankAccountInputModel inputModel)
         {
             if (!ModelState.IsValid)
@@ -61,6 +71,14 @@ namespace BankAPI.API.Controllers
         }
 
         [HttpPost("transfer")]
+        [ProducesResponseType(typeof(CustomApiResponse<TransferBankAccountViewModel>), StatusCodes.Status200OK, "application/json")]
+        [ProducesResponseType(typeof(CustomApiResponse<string>), StatusCodes.Status400BadRequest, "application/json")]
+        [ProducesResponseType(typeof(CustomApiResponse<string>), StatusCodes.Status500InternalServerError, "application/json")]
+        [SwaggerOperation(
+            OperationId = "TransferirValor",
+            Summary = "Realiza transferência entre contas bancárias",
+            Description = @"Valida saldo, status das contas e registra a transação.
+                            Exige autenticação básica.")]
         public async Task<IActionResult> TransferBankAccount([FromBody] TransferBankAccountInputModel inputModel)
         {
             if (!ModelState.IsValid)

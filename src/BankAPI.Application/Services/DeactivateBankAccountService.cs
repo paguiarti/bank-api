@@ -40,8 +40,7 @@ namespace BankAPI.Application.Services
             catch (InvalidBankAccountStatusException ex)
             {
                 return CustomApiResponse<DeactivateBankAccountViewModel>.FailResponse(
-                    ex.Message,
-                    StatusCodes.Status400BadRequest);
+                    ex.Message);
             }
         }
     }

@@ -4,6 +4,7 @@ using BankAPI.Application.Dtos.ViewModels;
 using BankAPI.Application.Interfaces.Services;
 using BankAPI.Core.Exceptions;
 using BankAPI.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace BankAPI.Application.Services
@@ -59,10 +60,11 @@ namespace BankAPI.Application.Services
                         bankAccountTo.Id,
                         inputModel.Amount));
                 }
-                catch (Exception ex) when (ex is InvalidTransferValueException ||
-                                   ex is InvalidBankAccountStatusException ||
-                                   ex is InsufficientFundsException ||
-                                   ex is InvalidTransferDestinationException)
+                catch (Exception ex) when (
+                    ex is InvalidTransferValueException ||
+                    ex is InvalidBankAccountStatusException ||
+                    ex is InsufficientFundsException ||
+                    ex is InvalidTransferDestinationException)
                 {
                     await _unitOfWork.RollBackTransactionAsync();
                     result = CustomApiResponse<TransferBankAccountViewModel>.FailResponse(ex.Message);
@@ -72,7 +74,7 @@ namespace BankAPI.Application.Services
                     _logger.LogError(ex, $"Erro inesperado na transferência da conta {bankAccountFrom.Id} para a conta {bankAccountTo.Id}");
 
                     await _unitOfWork.RollBackTransactionAsync();
-                    result = CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Erro ao processar transferência. Tente novamente mais tarde.");
+                    result = CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Erro ao processar transferência. Tente novamente mais tarde.", StatusCodes.Status500InternalServerError);
                 }
             });
 
