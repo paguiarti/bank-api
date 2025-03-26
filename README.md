@@ -1,6 +1,6 @@
 # Sistema Caixa de Banco
 
-Esta API executa operações bancárias básicas, permitindo que os usuários realizem diversas operações.
+API em .NET para gerenciamento de contas bancárias, transferências e histórico de transações.
 
 Obs: Todos os horários são registrados em UTC para simplificação do ambiente.
 
