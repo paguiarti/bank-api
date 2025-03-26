@@ -21,7 +21,7 @@ A API permite a desativação de contas bancárias. Uma conta desativada não po
 - Transferência de valores
 A API permite a transferência de valores entre duas contas bancárias, desde que ambas as contas estejam ativas e a conta de origem tenha saldo suficiente para a transação.
 
-## Tecnologias Usadas
+## Tecnologias Usadas / Padrões
 
 - **.NET 8.0**
 - **Entity Framework**
