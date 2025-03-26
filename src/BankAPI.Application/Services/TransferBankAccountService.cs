@@ -50,7 +50,6 @@ namespace BankAPI.Application.Services
 
                 try
                 {
-
                     bankAccountFrom.TransferTo(bankAccountTo, inputModel.Amount);
 
                     await _unitOfWork.CommitTransactionAsync();

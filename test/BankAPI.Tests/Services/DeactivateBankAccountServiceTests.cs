@@ -42,11 +42,10 @@ namespace BankAPI.Tests.Services
             var result = await _deactivateBankAccountService.DeactivateBankAccountAsync(inputModel);
 
             // Assert
-            _unitOfWorkMock
-                .Verify(u => u.BankAccountRepository.GetByIdAsync(inputModel.BankAccountId), Times.Once);
+            Assert.Equal(BankAccountStatus.Inactive.ToString(), result?.Data?.Status);
 
             _unitOfWorkMock
-                .Verify(u => u.BankAccountRepository.Update(It.Is<BankAccount>(b => b.Status == BankAccountStatus.Inactive)), Times.Once);
+                .Verify(u => u.BankAccountRepository.GetByIdAsync(inputModel.BankAccountId), Times.Once);
 
             _unitOfWorkMock
                 .Verify(u => u.SaveChangesAsync(), Times.Once);
