@@ -1,0 +1,29 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment:
+      SA_PASSWORD: "Etb3n&kag@"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql    
+    restart: unless-stopped
+
+  bankapi:
+    build: .
+    container_name: bankapi
+    depends_on:
+      - sqlserver        
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=BankAPI;User=sa;Password=Etb3n&kag@;TrustServerCertificate=true;Connect Timeout=30;
+    restart: unless-stopped
+
+volumes:
+  sql_data:

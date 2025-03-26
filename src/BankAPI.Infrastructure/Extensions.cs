@@ -14,9 +14,19 @@ namespace BankAPI.Infrastructure
         public static IServiceCollection AddBankContext(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            
-            services.AddDbContext<BankContext>(options => 
-                options.UseSqlServer(connectionString));
+
+            services.AddDbContext<BankContext>(options =>
+                options.UseSqlServer(
+                    connectionString,
+                    sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(10),
+                            errorNumbersToAdd: null);
+                    }
+                )
+            );
 
             return services;
         }
@@ -24,10 +34,10 @@ namespace BankAPI.Infrastructure
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IBankAccountRepository, BankAccountRepository>();
-            
+
             return services;
         }
-        
+
         public static IServiceCollection AddUnitOfWork(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
