@@ -9,7 +9,7 @@ namespace BankAPI.Core.Entities
             BankAccountId = bankAccountId;
             Status = status;            
             User = user;
-            ActionDate = DateTime.Now;
+            ActionDate = DateTime.UtcNow;
         }
 
         public int BankAccountId { get; private set; }

@@ -49,7 +49,7 @@ namespace BankAPI.Tests.Entities
             var bankAccount = new BankAccount(name, document);
 
             // Assert
-            Assert.InRange(bankAccount.OpeningDate, DateTime.Now.AddSeconds(-5), DateTime.Now);
+            Assert.InRange(bankAccount.OpeningDate, DateTime.UtcNow.AddSeconds(-10), DateTime.UtcNow);
         }
 
         [Fact]

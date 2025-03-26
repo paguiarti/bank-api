@@ -2,6 +2,8 @@
 
 Esta API executa operações bancárias básicas, permitindo que os usuários realizem diversas operações.
 
+Obs: Todos os horários são registrados em UTC para simplificação do ambiente.
+
 ## Projeto
 
 Este projeto é uma aplicação em **.NET 8.0** utilizando **Arquitetura Limpa**, **SOLID** e **DDD (Domain-Driven Design)**. A aplicação usa **Entity Framework** para interação com o banco de dados **SQL Server**.

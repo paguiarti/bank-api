@@ -26,7 +26,7 @@ namespace BankAPI.Core.Entities
             TransactionType = transactionType;
             Description = description;            
             TransactionPairId = transactionPairId;
-            TransactionDate = DateTime.Now;
+            TransactionDate = DateTime.UtcNow;
         }
 
         public int BankAccountId { get; private set; }

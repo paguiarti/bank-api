@@ -19,7 +19,7 @@ namespace BankAPI.Core.Entities
             Name = name;
             Document = document;
             Balance = INITIAL_BONUS;
-            OpeningDate = DateTime.Now;
+            OpeningDate = DateTime.UtcNow;
             Status = BankAccountStatus.Active;
             StatusHistory = new List<BankAccountStatusHistory>();
             Transactions = new List<BankAccountTransaction>();
