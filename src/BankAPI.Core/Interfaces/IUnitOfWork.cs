@@ -10,5 +10,6 @@ namespace BankAPI.Core.Interfaces
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();
         Task RollBackTransactionAsync();
+        Task ExecuteResilientlyAsync(Func<Task> operation);
     }
 }

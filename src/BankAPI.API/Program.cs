@@ -8,12 +8,17 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Definir fuso horário globalmente
+TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
 
+builder.Services.AddSingleton(timeZone);
+
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddBankContext(builder.Configuration);
-builder.Services.AddRepositories();
+builder.Services.AddResilientOperation();
 builder.Services.AddUnitOfWork();
+builder.Services.AddRepositories();
 builder.Services.AddApplicationServices();
 builder.Services.AddFluentValidation();
 

@@ -44,5 +44,12 @@ namespace BankAPI.Infrastructure
 
             return services;
         }
+
+        public static IServiceCollection AddResilientOperation(this IServiceCollection services)
+        {
+            services.AddScoped<IResilientOperation, ResilientOperation>();
+            
+            return services;
+        }
     }
 }

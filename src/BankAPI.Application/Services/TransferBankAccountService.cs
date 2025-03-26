@@ -23,10 +23,11 @@ namespace BankAPI.Application.Services
 
         public async Task<CustomApiResponse<TransferBankAccountViewModel>> TransferBankAccountAsync(TransferBankAccountInputModel inputModel)
         {
+
             var bankAccountFrom = await _unitOfWork
                 .BankAccountRepository
                 .GetByIdAsync(inputModel.BankAccountIdFrom);
-            
+
             var bankAccountTo = await _unitOfWork
                 .BankAccountRepository
                 .GetByIdAsync(inputModel.BankAccountIdTo);
@@ -41,35 +42,42 @@ namespace BankAPI.Application.Services
                 return CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Conta de destino não encontrada.");
             }
 
-            await _unitOfWork.BeginTransactionAsync();
+            CustomApiResponse<TransferBankAccountViewModel> result = null;
 
-            try
+            await _unitOfWork.ExecuteResilientlyAsync(async () =>
             {
-                bankAccountFrom.TransferTo(bankAccountTo, inputModel.Amount);
+                await _unitOfWork.BeginTransactionAsync();
 
-                await _unitOfWork.CommitTransactionAsync();
+                try
+                {
 
-                return CustomApiResponse<TransferBankAccountViewModel>.SuccessResponse(new TransferBankAccountViewModel(
-                    bankAccountFrom.Id,
-                    bankAccountTo.Id,
-                    inputModel.Amount));
+                    bankAccountFrom.TransferTo(bankAccountTo, inputModel.Amount);
 
-            }
-            catch (Exception ex) when (ex is InvalidTransferValueException ||                                
-                               ex is InvalidBankAccountStatusException ||
-                               ex is InsufficientFundsException ||
-                               ex is InvalidTransferDestinationException)
-            {
-                await _unitOfWork.RollBackTransactionAsync();
-                return CustomApiResponse<TransferBankAccountViewModel>.FailResponse(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Erro inesperado na transferência da conta {bankAccountFrom.Id} para a conta {bankAccountTo.Id}");
-                
-                await _unitOfWork.RollBackTransactionAsync();                
-                return CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Erro ao processar transferência. Tente novamente mais tarde.");
-            }
+                    await _unitOfWork.CommitTransactionAsync();
+
+                    result = CustomApiResponse<TransferBankAccountViewModel>.SuccessResponse(new TransferBankAccountViewModel(
+                        bankAccountFrom.Id,
+                        bankAccountTo.Id,
+                        inputModel.Amount));
+                }
+                catch (Exception ex) when (ex is InvalidTransferValueException ||
+                                   ex is InvalidBankAccountStatusException ||
+                                   ex is InsufficientFundsException ||
+                                   ex is InvalidTransferDestinationException)
+                {
+                    await _unitOfWork.RollBackTransactionAsync();
+                    result = CustomApiResponse<TransferBankAccountViewModel>.FailResponse(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Erro inesperado na transferência da conta {bankAccountFrom.Id} para a conta {bankAccountTo.Id}");
+
+                    await _unitOfWork.RollBackTransactionAsync();
+                    result = CustomApiResponse<TransferBankAccountViewModel>.FailResponse("Erro ao processar transferência. Tente novamente mais tarde.");
+                }
+            });
+
+            return result;
         }
     }
 }

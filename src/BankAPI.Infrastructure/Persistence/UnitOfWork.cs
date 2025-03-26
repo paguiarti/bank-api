@@ -8,9 +8,14 @@ namespace BankAPI.Infrastructure.Persistence
     public class UnitOfWork : IUnitOfWork
     {
         private readonly BankContext _context;
-        public UnitOfWork(BankContext context)
+        private readonly IResilientOperation _resilientOperation;
+
+        public UnitOfWork(
+            BankContext context,
+            IResilientOperation resilientOperation)
         {
             _context = context;
+            _resilientOperation = resilientOperation;
         }
 
         private IBankAccountRepository? _bankAccountRepository;
@@ -43,6 +48,11 @@ namespace BankAPI.Infrastructure.Persistence
         public void Dispose()
         {
             _context.Dispose();
+        }
+
+        public async Task ExecuteResilientlyAsync(Func<Task> operation)
+        { 
+            await _resilientOperation.ExecuteAsync(operation);
         }
     }
 }
