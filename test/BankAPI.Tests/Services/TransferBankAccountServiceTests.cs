@@ -117,6 +117,10 @@ namespace BankAPI.Tests.Services
                 .Setup(u => u.BankAccountRepository.GetByIdAsync(inputModel.BankAccountIdTo))
                 .ReturnsAsync(bankAccountTo);
 
+            _unitOfWorkMock
+                .Setup(u => u.ExecuteResilientlyAsync(It.IsAny<Func<Task>>()))
+                .Returns(async (Func<Task> operation) => await operation());
+
             // Act
             var result = await _transferBankAccountService.TransferBankAccountAsync(inputModel);
 
@@ -149,6 +153,10 @@ namespace BankAPI.Tests.Services
             _unitOfWorkMock
                 .Setup(u => u.BankAccountRepository.GetByIdAsync(inputModel.BankAccountIdTo))
                 .ReturnsAsync(bankAccountTo);
+
+            _unitOfWorkMock
+                .Setup(u => u.ExecuteResilientlyAsync(It.IsAny<Func<Task>>()))
+                .Returns(async (Func<Task> operation) => await operation());
 
             // Act
             var result = await _transferBankAccountService.TransferBankAccountAsync(inputModel);
